@@ -51,7 +51,9 @@
     specialCharactersObject: null,
     language: 'en',
     theme: 'light', // "light" || "dark" || "flat" || "material" || "oldschool"
-    capsLockActive: true,
+    shiftActive: true,
+    capsLockActive: false,
+    alwaysCaps: false,
     allowRealKeyboard: false,
     allowMobileKeyboard: false, // v1.1.0 and the next versions
     cssAnimations: true,
@@ -323,6 +325,7 @@
           var fontWeight = typeof opt.keysFontWeight === 'string' && opt.keysFontWeight.length > 0 ? opt.keysFontWeight : 'normal';
 
           // static keys: begin
+          var isShiftActive = opt.shiftActive === true;
           var isCapsLockActive = opt.capsLockActive === true;
           var keysIconWidth = typeof opt.keysIconSize === 'string' && opt.keysIconSize.length > 0 ? opt.keysIconSize : '25px';
           var keysIconColor = '#707070';
@@ -331,7 +334,7 @@
           var keysSpacebarText = typeof opt.keysSpacebarText === 'string' && opt.keysSpacebarText.length > 0 ? opt.keysSpacebarText : 'Space';
 
           var spaceKey = '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key kioskboard-key-space ' + (keysAllowSpacebar ? 'spacebar-allowed' : 'spacebar-denied') + '" data-value="' + spaceKeyValue + '">' + keysSpacebarText + '</span>';
-          var capsLockKey = '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key-capslock ' + (isCapsLockActive ? 'capslock-active' : '') + '">' + kioskBoardIconCapslock(keysIconWidth, keysIconColor) + '</span>';
+          var capsLockKey = opt.alwaysCaps === true ? '' : '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key-capslock ' + (isCapsLockActive ? 'capslock-active' : (isShiftActive ? 'shift-active' : '')) + '">' + kioskBoardIconCapslock(keysIconWidth, keysIconColor) + '</span>';
           var backspaceKey = '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key-backspace">' + kioskBoardIconBackspace(keysIconWidth, keysIconColor) + '</span>';
           // static keys: end
 
@@ -537,7 +540,7 @@
           kioskBoardVirtualKeyboard.classList.add('kioskboard-theme-' + theTheme);
           kioskBoardVirtualKeyboard.classList.add(cssAnimationsClass);
           kioskBoardVirtualKeyboard.classList.add(cssAnimationsStyle);
-          kioskBoardVirtualKeyboard.classList.add((isCapsLockActive ? 'kioskboard-touppercase' : 'kioskboard-tolowercase'));
+          kioskBoardVirtualKeyboard.classList.add((isShiftActive ? 'kioskboard-touppercase' : 'kioskboard-tolowercase'));
           kioskBoardVirtualKeyboard.lang = keyboardLanguage;
           kioskBoardVirtualKeyboard.style.webkitLocale = '"' + keyboardLanguage + '"';
           kioskBoardVirtualKeyboard.style.animationDuration = cssAnimations ? (cssAnimationsDuration + 'ms') : '';
@@ -597,7 +600,7 @@
                   var keyValue = this.dataset.value || '';
 
                   // check capslock
-                  if (isCapsLockActive) {
+                  if (isShiftActive) {
                     keyValue = this.dataset.valueUpperCase || keyValue.toLocaleUpperCase(keyboardLanguage);
                   } else {
                     keyValue = this.dataset.valueLowerCase || keyValue.toLocaleLowerCase(keyboardLanguage);
@@ -615,6 +618,10 @@
                   // input trigger change event for update the value
                   input.dispatchEvent(changeEvent);
 
+                  // back to lower case if caps lock is not active
+                  if (isShiftActive && !isCapsLockActive) {
+                    capsLockKeyElm.click();
+                  }
                 }, false);
               }
             }
@@ -626,21 +633,42 @@
               capsLockKeyElm.addEventListener('click', function (e) {
                 e.preventDefault();
 
-                if (this.classList.contains('capslock-active')) {
+                if (this.classList.contains('shift-active')) {
+                  this.classList.remove('shift-active');
                   this.classList.remove('capslock-active');
-                  kioskBoardVirtualKeyboard.classList.add('kioskboard-tolowercase');
+                  if (!kioskBoardVirtualKeyboard.classList.contains('kioskboard-tolowercase')) {
+                    kioskBoardVirtualKeyboard.classList.add('kioskboard-tolowercase');
+                  }
                   kioskBoardVirtualKeyboard.classList.remove('kioskboard-touppercase');
+                  isShiftActive = false;
                   isCapsLockActive = false;
                 } else {
-                  this.classList.add('capslock-active');
+                  this.classList.add('shift-active');
                   kioskBoardVirtualKeyboard.classList.remove('kioskboard-tolowercase');
                   kioskBoardVirtualKeyboard.classList.add('kioskboard-touppercase');
-                  isCapsLockActive = true;
+                  isShiftActive = true;
                 }
 
                 // focus the input
                 input.focus();
               }, false);
+              capsLockKeyElm.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+
+                if (!this.classList.contains('capslock-active')) {
+                  this.classList.add('capslock-active');
+                  if (!this.classList.contains('shift-active')) {
+                    this.classList.add('shift-active');
+                    kioskBoardVirtualKeyboard.classList.remove('kioskboard-tolowercase');
+                    kioskBoardVirtualKeyboard.classList.add('kioskboard-touppercase');
+                  }
+                  isShiftActive = true;
+                  isCapsLockActive = true;
+                }
+
+                // focus the input
+                input.focus();
+              })
             }
             // capslock key click listener: end
 

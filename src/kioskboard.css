@@ -172,14 +172,11 @@
   content: attr(data-value-upper-case);
 }
 
-#KioskBoard-VirtualKeyboard .kioskboard-row span[class^="kioskboard-key"]:not(.spacebar-denied):hover {
-  -webkit-transform: scaleY(0.98) translateY(1px);
-  transform: scaleY(0.98) translateY(1px);
-}
-
 #KioskBoard-VirtualKeyboard .kioskboard-row span[class^="kioskboard-key"]:not(.spacebar-denied):active {
   -webkit-transform: scaleY(0.95) translateY(4px);
   transform: scaleY(0.95) translateY(4px);
+  -webkit-box-shadow: 0 1px 0 0.04px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 0 0.04px rgba(0, 0, 0, 0.1);
 }
 
 #KioskBoard-VirtualKeyboard .kioskboard-row span[class^="kioskboard-key"] svg {
@@ -229,8 +226,12 @@
   background: #c4c4c4;
 }
 
-#KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-capslock.capslock-active::before {
+#KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-capslock.shift-active::before {
   background: #5decaa;
+}
+
+#KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-capslock.capslock-active::before {
+  background: #faa930;
 }
 
 #KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-backspace {
@@ -496,12 +497,20 @@
   background: #e6e6e6;
 }
 
+#KioskBoard-VirtualKeyboard.kioskboard-theme-oldschool span.kioskboard-key-capslock.shift-active::before,
+#KioskBoard-VirtualKeyboard.kioskboard-theme-flat span.kioskboard-key-capslock.shift-active::before,
+#KioskBoard-VirtualKeyboard.kioskboard-theme-light span.kioskboard-key-capslock.shift-active::before,
+#KioskBoard-VirtualKeyboard.kioskboard-theme-dark span.kioskboard-key-capslock.shift-active::before,
+#KioskBoard-VirtualKeyboard.kioskboard-theme-material span.kioskboard-key-capslock.shift-active::before {
+  background: #5decaa;
+}
+
 #KioskBoard-VirtualKeyboard.kioskboard-theme-oldschool span.kioskboard-key-capslock.capslock-active::before,
 #KioskBoard-VirtualKeyboard.kioskboard-theme-flat span.kioskboard-key-capslock.capslock-active::before,
 #KioskBoard-VirtualKeyboard.kioskboard-theme-light span.kioskboard-key-capslock.capslock-active::before,
 #KioskBoard-VirtualKeyboard.kioskboard-theme-dark span.kioskboard-key-capslock.capslock-active::before,
 #KioskBoard-VirtualKeyboard.kioskboard-theme-material span.kioskboard-key-capslock.capslock-active::before {
-  background: #5decaa;
+  background: #faa930;
 }
 
 #KioskBoard-VirtualKeyboard.kioskboard-theme-flat .kioskboard-row span[class^="kioskboard-key"] svg,
