@@ -160,8 +160,16 @@
   text-transform: lowercase;
 }
 
+#KioskBoard-VirtualKeyboard.kioskboard-tolowercase .kioskboard-row-dynamic span[class^=kioskboard-key][data-value-lower-case]::after {
+  content: attr(data-value-lower-case);
+}
+
 #KioskBoard-VirtualKeyboard.kioskboard-touppercase .kioskboard-row-dynamic span[class^="kioskboard-key"] {
   text-transform: uppercase;
+}
+
+#KioskBoard-VirtualKeyboard.kioskboard-touppercase .kioskboard-row-dynamic span[class^=kioskboard-key][data-value-upper-case]::after {
+  content: attr(data-value-upper-case);
 }
 
 #KioskBoard-VirtualKeyboard .kioskboard-row span[class^="kioskboard-key"]:not(.spacebar-denied):hover {

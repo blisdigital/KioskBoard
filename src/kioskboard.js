@@ -477,7 +477,13 @@
                 if (Object.prototype.hasOwnProperty.call(eachObj, key5)) {
                   var index5 = key5;
                   var value5 = eachObj[key5];
-                  var eachKey5 = '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key kioskboard-key-' + value5.toString().toLocaleLowerCase(keyboardLanguage) + '" data-index="' + index5.toString() + '" data-value="' + value5.toString() + '">' + value5.toString() + '</span>';
+                  var key_value = value5.toString();
+                  var extra_attr = ' data-value="' + key_value +'"';
+                  if (key_value.length > 1) {
+                    extra_attr += ' data-value-upper-case="' + key_value[1] + '" data-value-lower-case="' + key_value[0] + '"';
+                    key_value = '';
+                  }
+                  var eachKey5 = '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key kioskboard-key-' + value5.toString().toLocaleLowerCase(keyboardLanguage) + '" data-index="' + index5.toString() + '"'+ extra_attr + '>' + key_value + '</span>';
                   rowKeysContent += eachKey5;
                 }
               }
@@ -592,9 +598,9 @@
 
                   // check capslock
                   if (isCapsLockActive) {
-                    keyValue = keyValue.toLocaleUpperCase(keyboardLanguage);
+                    keyValue = this.dataset.valueUpperCase || keyValue.toLocaleUpperCase(keyboardLanguage);
                   } else {
-                    keyValue = keyValue.toLocaleLowerCase(keyboardLanguage);
+                    keyValue = this.dataset.valueLowerCase || keyValue.toLocaleLowerCase(keyboardLanguage);
                   }
 
                   // add value by index
@@ -619,8 +625,6 @@
             if (capsLockKeyElm) {
               capsLockKeyElm.addEventListener('click', function (e) {
                 e.preventDefault();
-                // focus the input
-                input.focus();
 
                 if (this.classList.contains('capslock-active')) {
                   this.classList.remove('capslock-active');
@@ -633,6 +637,9 @@
                   kioskBoardVirtualKeyboard.classList.add('kioskboard-touppercase');
                   isCapsLockActive = true;
                 }
+
+                // focus the input
+                input.focus();
               }, false);
             }
             // capslock key click listener: end
