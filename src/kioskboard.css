@@ -234,6 +234,24 @@
   background: #faa930;
 }
 
+#KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-alt-layout {
+  max-width: 100%;
+  min-height: 60px;
+  width: 70px;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+  text-align: center;
+}
+
+#KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-alt-layout svg {
+  left: auto;
+}
+
 #KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-backspace {
   position: relative;
   max-width: 100%;
@@ -249,7 +267,7 @@
 #KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-space {
   min-height: 60px;
   max-width: 100%;
-  width: calc(100% - 16px - 140px - 16px - 140px - 16px);
+  width: calc(100% - 16px - 140px - 16px - 140px - 16px - 100px - 16px);
   -webkit-box-flex: 1;
   -webkit-flex: 1 1 auto;
   -ms-flex: 1 1 auto;
@@ -258,7 +276,7 @@
 
 /* 140+16=>CapsLock && 140+16=>BackSpace && 140+16=>SpecialChar */
 #KioskBoard-VirtualKeyboard .kioskboard-row-bottom.kioskboard-with-specialcharacter span.kioskboard-key-space {
-  width: calc(100% - 16px - 140px - 16px - 140px - 16px - 140px - 16px);
+  width: calc(100% - 16px - 140px - 16px - 140px - 16px - 140px - 16px - 100px - 16px);
 }
 
 #KioskBoard-VirtualKeyboard .kioskboard-row-bottom span.kioskboard-key-space.spacebar-denied {

@@ -39,7 +39,7 @@ var turkishKeyboard = [
     "11": "Ü"
   },
   {
-    "0": "A",
+    "0": "àÁ",
     "1": "S",
     "2": "D",
     "3": "F",
@@ -63,13 +63,21 @@ var turkishKeyboard = [
     "8": "Ç"
   }
 ];
+var testKeyboard = [
+  {
+    "0": "Q",
+    "1": "W",
+    "2": "E",
+  }
+];
 // DEMO: Turkish Keys: end
 
 // DEMO: KioskBoard Run: begin
 KioskBoard.Run('.js-kioskboard-input', {
-  keysArrayOfObjects: turkishKeyboard,
-  // keysJsonUrl: 'kioskboard-keys-turkish.json',
-  language: 'tr',
+  // keysArrayOfObjects: turkishKeyboard,
+  // altKeysArrayOfObjects: testKeyboard,
+   keysJsonUrl: '../dist/kioskboard-keys-german.json',
+  language: 'de',
   keysFontFamily: 'Barlow',
   keysFontWeight: '500',
 });

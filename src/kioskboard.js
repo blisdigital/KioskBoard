@@ -48,6 +48,8 @@
   var kioskBoardDefaultOptions = {
     keysArrayOfObjects: null,
     keysJsonUrl: null,
+    altKeysArrayOfObjects: null,
+    altKeysJsonUrl: null,
     specialCharactersObject: null,
     language: 'en',
     theme: 'light', // "light" || "dark" || "flat" || "material" || "oldschool"
@@ -153,6 +155,13 @@
     var icon = '<svg version="1.1" id="KioskBoardIconClose" width="' + width + '" height="' + width + '" style="width:' + width + ';height:' + width + ';fill:' + color + ';" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 348.333 348.334" xml:space="preserve"><path d="M336.559,68.611L231.016,174.165l105.543,105.549c15.699,15.705,15.699,41.145,0,56.85c-7.844,7.844-18.128,11.769-28.407,11.769c-10.296,0-20.581-3.919-28.419-11.769L174.167,231.003L68.609,336.563c-7.843,7.844-18.128,11.769-28.416,11.769c-10.285,0-20.563-3.919-28.413-11.769c-15.699-15.698-15.699-41.139,0-56.85l105.54-105.549L11.774,68.611c-15.699-15.699-15.699-41.145,0-56.844c15.696-15.687,41.127-15.687,56.829,0l105.563,105.554	L279.721,11.767c15.705-15.687,41.139-15.687,56.832,0C352.258,27.466,352.258,52.912,336.559,68.611z"/></svg>';
     return icon;
   };
+  var kioskBoardIconAltLayout = function (width, height, color) {
+    if (!width) { width = 35; }
+    if (!height) { width = 25; }
+    if (!color) { color = '#707070'; }
+    var icon = '&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + width + ' ' + height + '" width="' + width +'" height="' + height +'" fill="' + color + '"><g transform="scale(1.6667),translate(-2,-5)"><path d="M0 0h24v24H0V0zm0 0h24v24H0V0z" fill="none"/><path d="M20 7v10H4V7h16m0-2H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2zm0 3h2v2h-2zM8 8h2v2H8zm0 3h2v2H8zm-3 0h2v2H5zm0-3h2v2H5zm3 6h8v2H8zm6-3h2v2h-2zm0-3h2v2h-2zm3 3h2v2h-2zm0-3h2v2h-2z"/></g></svg>';
+    return icon;
+  };
   // KioskBoard: Icons: end
 
   // KioskBoard: IE support for Event: begin
@@ -206,6 +215,7 @@
     },
     // Run
     Run: function (selectorOrElement, options) {
+      console.log('Run', selectorOrElement, options);
       // Element(s)
       var kbElements = [];
 
@@ -335,6 +345,7 @@
 
           var spaceKey = '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key kioskboard-key-space ' + (keysAllowSpacebar ? 'spacebar-allowed' : 'spacebar-denied') + '" data-value="' + spaceKeyValue + '">' + keysSpacebarText + '</span>';
           var capsLockKey = opt.alwaysCaps === true ? '' : '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key-capslock ' + (isCapsLockActive ? 'capslock-active' : (isShiftActive ? 'shift-active' : '')) + '">' + kioskBoardIconCapslock(keysIconWidth, keysIconColor) + '</span>';
+          var altLayoutKey = opt.altKeysJsonUrl || opt.altKeysArrayOfObjects ? '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key-alt-layout">' + kioskBoardIconAltLayout(35, 25, keysIconColor) + '</span>' : '';
           var backspaceKey = '<span style="font-family:' + fontFamily + ',sans-serif;font-weight:' + fontWeight + ';font-size:' + fontSize + ';" class="kioskboard-key-backspace">' + kioskBoardIconBackspace(keysIconWidth, keysIconColor) + '</span>';
           // static keys: end
 
@@ -495,7 +506,7 @@
             // dynamic keys group: end
 
             // bottom keys group: begin
-            keysRowElements += '<div class="kioskboard-row kioskboard-row-bottom ' + (allowedSpecialCharacters ? 'kioskboard-with-specialcharacter' : '') + '">' + capsLockKey + specialCharacterKey + spaceKey + backspaceKey + '</div>';
+            keysRowElements += '<div class="kioskboard-row kioskboard-row-bottom ' + (allowedSpecialCharacters ? 'kioskboard-with-specialcharacter' : '') + '">' + capsLockKey + specialCharacterKey + altLayoutKey + spaceKey + backspaceKey + '</div>';
             // bottom keys group: end
 
             // add if special character keys allowed: begin
@@ -671,6 +682,31 @@
               })
             }
             // capslock key click listener: end
+
+            // alt layout key click listener: begin
+            var altLayoutKeyElm = window.document.getElementById(kioskBoardVirtualKeyboard.id).getElementsByClassName('kioskboard-key-alt-layout')[0];
+            if (altLayoutKeyElm) {
+              altLayoutKeyElm.addEventListener('click', function (e) {
+                e.preventDefault();
+                console.log('altLayout click');
+
+                var keysJsonUrl = opt.keysJsonUrl;
+                var altKeysJsonUrl = opt.altKeysJsonUrl;
+                var keysArrayOfObjects = opt.keysArrayOfObjects;
+                var altKeysArrayOfObjects = opt.altKeysArrayOfObjects;
+                opt.keysJsonUrl = altKeysJsonUrl;
+                opt.altKeysJsonUrl = keysJsonUrl;
+                opt.keysArrayOfObjects = altKeysArrayOfObjects;
+                opt.altKeysArrayOfObjects = keysArrayOfObjects;
+
+                window.document.body.click();
+                //kioskBoardVirtualKeyboard.remove();
+                setTimeout(function() { console.log('open up', selectorOrElement, opt); KioskBoard.Run(selectorOrElement, opt); }, 500);
+                //createKeyboardAndAppendTo(opt.altKeysArrayOfObjects, input); // create the keyboard
+                //input.focus();
+              });
+            }
+            // alt layout key click listener: end
 
             // backspace key click listener: begin
             var backspaceKeyElm = window.document.getElementById(kioskBoardVirtualKeyboard.id).getElementsByClassName('kioskboard-key-backspace')[0];
@@ -888,6 +924,7 @@
         // if: an input or textarea element
         if (allowedElementTypes.indexOf(getTagName) > -1) {
           // if: has cached keys => create the keyboard by using cached keys
+          console.log('kioskBoardCachedKeys', kioskBoardCachedKeys);
           if (kioskBoardCachedKeys) {
             createKeyboardAndAppendTo(kioskBoardCachedKeys, eachElement);
           }
