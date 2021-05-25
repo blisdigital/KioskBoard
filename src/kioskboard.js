@@ -668,7 +668,7 @@
 
                 // focus the input
                 input.focus();
-              })
+              });
             }
             // capslock key click listener: end
 
