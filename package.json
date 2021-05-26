@@ -1,9 +1,9 @@
 {
   "name": "kioskboard",
-  "main": "dist/kioskboard-aio-1.5.0.min.js",
-  "version": "1.5.0",
+  "main": "dist/kioskboard-aio-1.5.0-blisdigital.min.js",
+  "version": "1.5.0-blisdigital",
   "description": "A pure JavaScript library for using the Virtual Keyboard.",
-  "homepage": "https://github.com/furcan/KioskBoard",
+  "homepage": "https://github.com/blisdigital/KioskBoard",
   "files": [
     "dist",
     "src"
@@ -18,14 +18,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/furcan/KioskBoard.git"
+    "url": "https://github.com/blisdigital/KioskBoard.git"
   },
   "bugs": {
-    "url": "https://github.com/furcan/KioskBoard/issues"
+    "url": "https://github.com/blisdigital/KioskBoard/issues"
   },
   "author": "Furkan MT (https://github.com/furcan)",
   "contributors": [
-    "Furkan MT (https://github.com/furcan)"
+    "Furkan MT (https://github.com/furcan)",
+    "BLIS.digital (https://github.com/blisdigital)"
   ],
   "license": "MIT",
   "devDependencies": {
